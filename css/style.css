@@ -136,17 +136,17 @@ body {
 	overflow: auto;
 }
 .form_upload {
-	width: 300px;
-	height: 140px;
-	border: 1px solid #999999;
-	border-radius: 10px;
-	background: #ffffff;
-	color: #666666;
-	margin: auto;
-	margin-top: 160px;
-	padding: 10px;
-	text-align: left;
-	position: relative;
+    width: 50%;
+    height: auto;
+    border: 1px solid #999999;
+    background: #ffffff;
+    color: #666666;
+    margin: auto;
+        margin-top: auto;
+    margin-top: 160px;
+    padding: 10px;
+    text-align: left;
+    position: relative;
 }
 .form_upload h2 {
 	border-bottom: 1px solid #999999;

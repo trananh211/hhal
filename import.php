@@ -1,5 +1,4 @@
 <?php 
-echo "<pre>";
 // including the config file
 include('config.php');
 $pdo = connect();
@@ -10,11 +9,25 @@ if (is_file($csv_file)) {
 	// if the csv file contain the table header leave this line
 	$row = fgetcsv($input, 1024, ','); // here you got the header
 	
+	//kiem tra trung lap truoc
+	$sql_check = 'SELECT email FROM members WHERE 1';
+	$query_check = $pdo->prepare($sql_check);
+	$query_check->execute();
+	$list = $query_check->fetchAll();
+	$arr = array();
+	foreach ($list as $value) {
+		$arr[] = $value['email'];
+	}
+	//end chuan bi mang
+	
 	while ($row = fgetcsv($input, 1024, ',')) {
 		// insert into the database		
-		$sql = 'INSERT INTO members(full_name, first_name, last_name, email, mobile, birthday, niche, country, created) VALUES(:full_name, :first_name, :last_name, :email, :mobile, :birthday, :niche, :country, :created)';
-		$query = $pdo->prepare($sql);
+		$sql = 'INSERT IGNORE INTO members(full_name, first_name, last_name, email, mobile, birthday, niche, country, created) VALUES(:full_name, :first_name, :last_name, :email, :mobile, :birthday, :niche, :country, :created)';
+		if (in_array(trim($row[3]), $arr)) {
+			continue;
+		}
 
+		$query = $pdo->prepare($sql);
 		$query->bindParam(':full_name', $row[0], PDO::PARAM_STR);
 		//first name - last name
 		$first_name = $row[2];
@@ -37,9 +50,6 @@ if (is_file($csv_file)) {
 		$query->execute();
 	}
 }
-echo "</pre>";
 // redirect to the index page
 header('location: index.php');
 ?>
-
-
